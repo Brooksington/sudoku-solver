@@ -236,7 +236,7 @@ const isSolved = (inputSudoku) => {
 //tweaks), would solve the puzzle. So i just rolled with it, and kept the name as a reminder that things dont always go to plan.
 const init = (inputSudoku) => {
     let count = 0;
-    while(!isSolved(inputSudoku)&&count<50){
+    while(!isSolved(inputSudoku)&&count<200){
         const possRowValues=missingValues(getRows(inputSudoku));
         const possColValues=missingValues(getCols(inputSudoku));
         const possGridValues=missingValuesGrid(getGrid(inputSudoku));
@@ -283,7 +283,7 @@ const init = (inputSudoku) => {
         }
     }
     if(isSolved(inputSudoku)) console.log(`completed after ${count} iterations.`);
-    else console.log("failed to complete puzzle in allotted iterations.");
+    else console.log("failed to complete puzzle in allotted iterations. ("+count+")");
     console.table(sudokuToMatrix(inputSudoku));
 };
 
