@@ -8,6 +8,15 @@ There are also a lot of Arrow functions and other traditionally declared functio
 I didnt want to have to worry about hoisting. None of this code screams best practices or anything, I'm still learning what best practices 
 even are. I didn't encapsulate anything and most of the matrix manipulation functions should probably be private methods in a class.
 */
+
+
+
+//there are 2 hardcoded puzzles named Sudoku1 and 2, 1 is VERY easy, 2 is quite difficult.
+//you can choose between the puzzles by changing the value of whichSudokuAmISolving near the bottom(currently line 519)
+//inputing "sudoku" into that field, allows you to enter your own sudoku puzzle to solve. Can be entered using tab and 
+//the numpad for quick...ish entry
+window.addEventListener('DOMContentLoaded', (e) =>{
+
 const base = 10;
 const baseRoot=Math.floor(Math.sqrt(base));
 const canvas=document.getElementById("canvas");
@@ -15,8 +24,6 @@ const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 const stack = [];
-let stackPopCounter = 0;
-
 
 const sudoku1 = [
     [new SudokuSquare(2),new SudokuSquare(),new SudokuSquare(),new SudokuSquare(5),new SudokuSquare(),new SudokuSquare(),new SudokuSquare(4),new SudokuSquare(7),new SudokuSquare()],
@@ -59,7 +66,6 @@ const generateMatrix = (width,height,fillValue=null) => {
 };
 
 const DOMSudoku = document.getElementById("sudoku");
-
 const renderMatrixToDOM = () => {
     const matrix = generateMatrix(9,9,new SudokuSquare());
     for(let i=0;i<matrix.length;i++){
@@ -410,8 +416,8 @@ let branched = false;
 function branch(sudokuToBranch){
     console.log(`called branch`);
     let shortest=sudokuToBranch[0][0];
-    let shortestXPos;
-    let shortestYPos;
+    let shortestXPos=0;
+    let shortestYPos=0;
     for(let i=0;i<sudokuToBranch.length;i++){
         for(let j=0;j<sudokuToBranch[i].length;j++){
             if(sudokuToBranch[i][j].possValuesForSquare.length<2||sudokuToBranch[i][j].value!==null){
@@ -512,20 +518,19 @@ function debugDuplicates(value,inputSudoku,i,j){
 }
 
 //sudoku/sudoku1/sudoku2
-const whichSudokuAmISolving = sudoku1;
-matrixToDom(sudokuToMatrix(whichSudokuAmISolving));
+const whichSudokuAmISolving = sudoku;
+if(whichSudokuAmISolving !== sudoku) matrixToDom(sudokuToMatrix(whichSudokuAmISolving));
 
 //it's a button...
 const button = document.getElementById("button");
 button.addEventListener("click", (e) => {
-    //let toSolveMatrix=domToMatrix();
-    //console.table(toSolveMatrix);
-    //let toSolveSudoku=matrixToSudoku(toSolveMatrix);
-    //console.table(toSolveSudoku);
-    //init(toSolveSudoku);
-    //matrixToDom(sudokuToMatrix(toSolveSudoku));
-    init(whichSudokuAmISolving);
-    //matrixToDom(sudokuToMatrix(whichSudokuAmISolving));
+    if(whichSudokuAmISolving===sudoku){
+        let toSolveMatrix=domToMatrix();
+        let toSolveSudoku=matrixToSudoku(toSolveMatrix);
+        init(toSolveSudoku);
+    } else {
+        init(whichSudokuAmISolving);
+    }
+    
 });
-
-
+});
